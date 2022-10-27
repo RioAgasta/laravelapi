@@ -108,24 +108,12 @@ class apiController extends Controller
     public function update($id, Request $request)
     {
         $post = apiModel::findOrFail($id);
-        $image_path = $request->file('image')->store('image', 'public');
-
-        if($request->hasfile('image')){
-            // Delete any existing image files and database entries.
-            $existingimages = $post->image;
-            if($existingimages->count() > 0)
-                foreach($existingimages as $existingimage) { 
-                    $filename = public_path().'image/'.$existingimage->hashName();
-                    unlink($filename);
-                    $existingimage->delete();
-                }
-        }
 
         if ($post) {
             $post->update([
                 'title' => $request->title,
                 'price' => $request->price,
-                'image' => $image_path,
+                'image' => $request->image,
             ]);
 
             return response()->json([
