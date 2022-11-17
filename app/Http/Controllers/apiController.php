@@ -108,12 +108,17 @@ class apiController extends Controller
     public function update($id, Request $request)
     {
         $post = apiModel::findOrFail($id);
+        $image_path = $request->file('image')->store('image', 'public');
 
         if ($post) {
+            // Delete file from storage
+            $file = str_replace('\\', '/', public_path('storage/')).$post->image;
+            unlink($file);
+
             $post->update([
                 'title' => $request->title,
                 'price' => $request->price,
-                'image' => $request->image,
+                'image' => $image_path
             ]);
 
             return response()->json([
@@ -139,6 +144,9 @@ class apiController extends Controller
     {
         $product=apiModel::find($id);
         if($product){
+            // Delete file from storage
+            $file = str_replace('\\', '/', public_path('storage/')).$product->image;
+            unlink($file);
             $product->delete();
 
             return response()->json([
