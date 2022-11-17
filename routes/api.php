@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\apiController;
+use App\Http\Controllers\categoryController;
 
 
 /*
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('crud', apiController::class);
+Route::resource('category', categoryController::class);
