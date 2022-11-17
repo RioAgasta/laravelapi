@@ -46,7 +46,8 @@ class apiController extends Controller
         $post = apiModel::create([
             'title' => $request->title,
             'price' => $request->price,
-            'image' => $image_path
+            'image' => $image_path,
+            'category' => $request->category
         ]);
 
         if($post){
@@ -118,7 +119,8 @@ class apiController extends Controller
             $post->update([
                 'title' => $request->title,
                 'price' => $request->price,
-                'image' => $image_path
+                'image' => $image_path,
+                'category' =>$request->category
             ]);
 
             return response()->json([
