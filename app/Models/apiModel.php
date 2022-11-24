@@ -11,6 +11,6 @@ class apiModel extends Model
 
     protected $table="api_models";
     protected $fillable =[
-        'title', 'price', 'image', 'category'
+        'title', 'price', 'image', 'category_id'
     ];
 }
