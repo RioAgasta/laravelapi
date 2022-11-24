@@ -69,7 +69,7 @@ class categoryController extends Controller
      */
     public function show($id)
     {
-        $posts = categoryModel::where('id', $id)->get()->load(['apiModel']);
+        $posts = categoryModel::whereId($id)->get()->load(['apiModel']);
 
         if($posts){
             return response()->json([
@@ -106,7 +106,29 @@ class categoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = categoryModel::findOrFail($id);
+
+        if ($post) {
+            // Delete file from storage
+            // $file = str_replace('\\', '/', public_path('storage/')).$post->image;
+            // unlink($file);
+
+            $post->update([
+                'category_name' => $request->category_name,
+                'category_image' => $request->category_image,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Post Telah di update',
+                'data'    => $post
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Post Tidak Ditemukan!'
+        ], 404);
     }
 
     /**
@@ -117,6 +139,22 @@ class categoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product=categoryModel::find($id);
+        if($product){
+            // Delete file from storage
+            $file = str_replace('\\', '/', public_path('storage/')).$product->category_image;
+            unlink($file);
+            $product->delete();
+
+            return response()->json([
+                'message'=>'product berhasil dihapus',
+                'code'=>200
+            ]);
+        } else {
+            return response()->json([
+                'message'=>'product dengan id:$id tidak tersedia',
+                'code'=>400
+            ]);
+        }
     }
 }

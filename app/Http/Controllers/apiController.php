@@ -109,17 +109,16 @@ class apiController extends Controller
     public function update($id, Request $request)
     {
         $post = apiModel::findOrFail($id);
-        $image_path = $request->file('image')->store('image', 'public');
 
         if ($post) {
             // Delete file from storage
-            $file = str_replace('\\', '/', public_path('storage/')).$post->image;
-            unlink($file);
+            // $file = str_replace('\\', '/', public_path('storage/')).$post->image;
+            // unlink($file);
 
             $post->update([
                 'title' => $request->title,
                 'price' => $request->price,
-                'image' => $image_path,
+                'image' => $request->image,
                 'category' =>$request->category
             ]);
 
